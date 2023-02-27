@@ -12,11 +12,13 @@ export default function List(props) {
 
 
 async function getCurrentTab() {
-  let queryOptions = { active: true, lastFocusedWindow: true };
+ let queryOptions = { active: true, currentWindow: true };
   // `tab` will either be a `tabs.Tab` instance or `undefined`.
   // eslint-disable-next-line no-undef
   let [tab] = await chrome.tabs.query(queryOptions);
   return tab;
+
+
 }
 
 const addItem = () => {
@@ -27,7 +29,7 @@ const addItem = () => {
 }
 
 useEffect(() => {
- // console.log("items",items);
+  console.log("items",props.items);
   //console.log("items search",itemSearch);
   if(Array.isArray(props.items)) {
     setSearchText('');
@@ -51,6 +53,8 @@ useEffect(() => {
 }, [searchText]);
 
 const insertValueToPage = (val) => {
+  // eslint-disable-next-line no-undef
+  console.log("activeTab",chrome.activeTab)
   const field = document.activeElement;
   console.log(field);
   if(field.value.length === 0) {
@@ -67,7 +71,7 @@ const removeItem = (name,value) => {
 
 const insertToPage = async (val) => {
   const currentTab = await getCurrentTab();
-  console.log(currentTab);
+  console.log("currentTab",currentTab);
   // eslint-disable-next-line no-undef
   chrome.scripting.executeScript({
     target: {tabId: currentTab.id},

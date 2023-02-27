@@ -27,10 +27,14 @@ function App() {
   const addItem = async (name,value) => {
     try 
     {
+      console.log(name,value);
       // eslint-disable-next-line no-undef
       const i = await chrome.storage.local.get(["appStorage"]);
+      console.log("addItem i",i)
+      let newItems = [];
       if(Array.isArray(i.appStorage)) {
-        const newItems = [...i.appStorage];
+        newItems = [...i.appStorage];
+      }
         newItems.push({ name,value});
     
         // eslint-disable-next-line no-undef
@@ -38,7 +42,6 @@ function App() {
         setItems(newItems);
         console.log(name,value,i);
       }
-    }
     catch(e) {
       console.log(e);
     }
