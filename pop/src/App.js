@@ -52,14 +52,15 @@ function App() {
     {
       // eslint-disable-next-line no-undef
       const i = await chrome.storage.local.get(["appStorage"]);
+      let allNewItems = newItems;
       if(Array.isArray(i.appStorage)) {
-        const allNewItems = [...i.appStorage,...newItems];
-    
-        // eslint-disable-next-line no-undef
-        await chrome.storage.local.set({appStorage: allNewItems});
-        setItems(allNewItems);
-        //console.log(name,value,i);
+        allNewItems = [...i.appStorage,...newItems];
       }
+        // eslint-disable-next-line no-undef
+      await chrome.storage.local.set({appStorage: allNewItems});
+      setItems(allNewItems);
+      console.log(allNewItems);
+      
     }
     catch(e) {
       console.log(e);
