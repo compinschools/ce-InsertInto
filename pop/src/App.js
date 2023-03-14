@@ -74,6 +74,26 @@ function App() {
     chrome.storage.local.set({appStorage: newItems});
   }
 
+  const editItem = (name,value,newName,newValue) => {
+    const newItems = items.map((item) => {
+      if(item.name === name && item.value === value) {
+        return {name: newName, value: newValue};
+      }
+      return item;
+    });
+    setItems(newItems);
+      // eslint-disable-next-line no-undef
+    chrome.storage.local.set({appStorage: newItems});
+  }
+
+  const clearItems = () => {
+    setItems([]);
+    // eslint-disable-next-line no-undef
+    chrome.storage.local.set({appStorage: []});
+  }
+  
+
+
 
 
   return (
@@ -91,8 +111,8 @@ function App() {
     </div>
     </div>
     </div>
-{ !showImportExport &&  <List addItem={addItem} deleteItem={deleteItem} items={items} /> }
-    { showImportExport && <ImportExport addItems={addItems} deleteItem={deleteItem} items={items} /> }
+{ !showImportExport &&  <List addItem={addItem} deleteItem={deleteItem} items={items} editItem={editItem} /> }
+    { showImportExport && <ImportExport addItems={addItems} deleteItem={deleteItem} items={items} clearItems={clearItems} /> }
      
     </div>
   );

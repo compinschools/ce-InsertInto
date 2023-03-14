@@ -41,6 +41,13 @@ const im = () => {
 
 };
 
+const clear = () => {
+  setData('');
+  props.clearItems();
+  alert('List is cleared');
+}
+
+
 
 
   return (
@@ -54,8 +61,11 @@ const im = () => {
         value={data} 
         onChange={ (e) => { setData(e.target.value) }} />
 
+      
       {/* eslint-disable-next-line no-restricted-globals */}
-      <Button onClick={ () => { confirm('Are you sure you want to import this list?') && im() } } >Import</Button>
+      <Button className="mr-1" onClick={ () => { confirm('Are you sure you want to clear this list?') && clear() } } >Clear</Button>
+      {/* eslint-disable-next-line no-restricted-globals */}
+      <Button className="mr-1" onClick={ () => { confirm('Are you sure you want to import this list?') && im() } } >Import</Button>
       <Button onClick={ex}>Export</Button>
     </div>
   )

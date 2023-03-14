@@ -1,14 +1,14 @@
 import { useEffect, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import { IoMdAdd ,IoMdArrowBack, IoIosDownload, IoIosTrash } from 'react-icons/io';
+import { IoMdAdd ,IoIosArrowRoundBack, IoIosDownload, IoIosTrash, IoMdCloseCircle, IoIosSave } from 'react-icons/io';
 export default function List(props) {
 
   const [itemSearch, setItemSearch] = useState([]);
   const [name, setName] = useState('');
   const [value, setValue] = useState('');
   const [searchText, setSearchText] = useState('');
- 
+  const [currentEdit, setCurrentEditing] = useState(undefined);
 
 
 async function getCurrentTab() {
@@ -81,11 +81,29 @@ const insertToPage = async (val) => {
 
 }
 
+const startEdit = (name,value) => {
+  setName(name);
+  setValue(value);
+  setCurrentEditing({name,value});
+}
+
+const endEdit = () => {
+  setCurrentEditing(undefined);
+  setName('');
+  setValue('');
+}
+
+const saveEdit = () => {
+  props.editItem(currentEdit.name,currentEdit.value,name,value);
+  endEdit();
+}
+
+
   return (
     <div>
       <div className='input-group mb-3'>
-      <Form.Control placeholder='Name' onChange={ (e) => setName(e.target.value)  } />
-      <Form.Control placeholder='Value' onChange={ (e) => setValue(e.target.value)}  />
+      <Form.Control placeholder='Name' value={name} onChange={ (e) => setName(e.target.value)  } />
+      <Form.Control placeholder='Value' value={value} onChange={ (e) => setValue(e.target.value)}  />
       <Button className='input-group-btn' onClick={() => { addItem() }}>
         <IoMdAdd />
         </Button>
@@ -107,9 +125,32 @@ const insertToPage = async (val) => {
         
         {Array.isArray(itemSearch) && itemSearch?.map((item, index) => {
           return <tr key={index}>
-            <td>{item.name}</td>
-            <td>{item.value}</td>
+            { (currentEdit && currentEdit.name === item.name && currentEdit.value === item.value) ?
+              <>
+              <td>
+                <Form.Control placeholder='Name' value={name} onChange={ (e) => setName(e.target.value)  } />
+              </td>
+              <td>
+                <Form.Control placeholder='Value' value={value} onChange={ (e) => setValue(e.target.value)}  />
+              </td>
+              <td>
+                 <Button size="sm" onClick={() => { saveEdit() }}>
+                <IoIosSave color='#000000' />
+              </Button>
+              <Button size="sm" onClick={() => { endEdit() }}>
+                <IoMdCloseCircle color='#000000' />
+              </Button>
+                </td> 
+              </>
+            :
+            <>
+              <td>{item.name}</td>
+              <td>{item.value}</td>
             <td>
+              
+            <Button size="sm" onClick={() => { startEdit(item.name,item.value) }}>
+                <IoIosArrowRoundBack color='#000000' />
+              </Button>
               <Button size="sm" onClick={() => { insertToPage(item.value) }}>
                 <IoIosDownload color='#000000' />
               </Button>
@@ -118,6 +159,11 @@ const insertToPage = async (val) => {
                 <IoIosTrash color="#000000" />
               </Button>
             </td>
+
+            </>
+            }
+            
+           
             </tr>
         })}
       </table>
