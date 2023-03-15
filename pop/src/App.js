@@ -111,7 +111,7 @@ function App() {
     </div>
     </div>
     </div>
-{ !showImportExport &&  <List addItem={addItem} deleteItem={deleteItem} items={items} editItem={editItem} /> }
+{ !showImportExport &&  <List addItem={addItem} deleteItem={deleteItem} items={items.sort( (a,b) => a.name.localeCompare(b.name))} editItem={editItem} /> }
     { showImportExport && <ImportExport addItems={addItems} deleteItem={deleteItem} items={items} clearItems={clearItems} /> }
      
     </div>

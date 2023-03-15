@@ -1,7 +1,7 @@
 
     {
       "name": "Insert Into",
-      "version": "1.0.2",
+      "version": "1.0.3",
       "manifest_version": 3,
       "description": "Extension will fill (or add to) the current field with a value from a list",
       "background": {
